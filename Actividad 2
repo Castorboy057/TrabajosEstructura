@@ -1,0 +1,16 @@
+class GestorFrutas:
+    def principal(self):
+        frutas = []
+        frutas.append("Fresa")
+        frutas.append("Pera")
+        frutas.append("Durazno")
+        frutas.append("Piña")
+        print(frutas)
+        frutas.pop(0)
+        frutas.pop(1)
+        frutas.append("Cereza")
+        print(frutas)
+
+if __name__ == "__main__":
+    gestor_frutas = GestorFrutas()
+    gestor_frutas.principal()
