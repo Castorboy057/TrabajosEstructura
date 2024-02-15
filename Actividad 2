@@ -34,3 +34,19 @@ if __name__ == "__main__":
     memoria_estatica = MemoriaEstatica()
     memoria_estatica.main()
     root.destroy()
+
+
+
+import numpy as np
+
+calificaciones = np.random.randint(0, 101, size=(100, 6))
+
+print("Matriz de Calificaciones:")
+print(calificaciones)
+
+
+alumno = 95
+materia = 5
+calificacion = calificaciones[alumno - 1, materia - 1] 
+print(f"\nCalificación del alumno {alumno} en la materia {materia}: {calificacion}")
+
