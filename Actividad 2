@@ -50,3 +50,4 @@ materia = 5
 calificacion = calificaciones[alumno - 1, materia - 1] 
 print(f"\nCalificación del alumno {alumno} en la materia {materia}: {calificacion}")
 
+Para mi es mas eficiente ordenar los alumnos de manera vertical y las materias en horizontal, tambien me corrio mas rapido en mi equipo de la misma forma que menciono pero eso es porque esta lento
