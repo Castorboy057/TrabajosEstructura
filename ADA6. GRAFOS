@@ -1,0 +1,112 @@
+class Estado:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.vecinos = {}
+
+    def agregar_vecino(self, vecino, costo):
+        self.vecinos[vecino] = costo
+
+    def __repr__(self):
+        return self.nombre
+
+
+class Grafo:
+    def __init__(self):
+        self.estados = {}
+
+    def agregar_estado(self, estado):
+        self.estados[estado.nombre] = estado
+
+    def conectar(self, estado1, estado2, costo):
+        self.estados[estado1].agregar_vecino(self.estados[estado2], costo)
+        self.estados[estado2].agregar_vecino(self.estados[estado1], costo)
+
+    def recorrer_sin_repetir(self):
+        visitados = set()
+        ruta = []
+
+        for estado in self.estados.values():
+            if not ruta:
+                ruta.append(estado)
+                visitados.add(estado)
+                break
+
+        while len(ruta) < len(self.estados):
+            estado_actual = ruta[-1]
+            siguiente_estado = None
+            min_costo = float('inf')
+
+            for vecino, costo in estado_actual.vecinos.items():
+                if vecino not in visitados and costo < min_costo:
+                    siguiente_estado = vecino
+                    min_costo = costo
+
+            if siguiente_estado:
+                ruta.append(siguiente_estado)
+                visitados.add(siguiente_estado)
+            else:
+                break
+
+        return ruta
+
+    def recorrer_con_repeticion(self):
+        ruta = []
+
+        for estado in self.estados.values():
+            ruta.append(estado)
+            break
+
+        while len(ruta) < len(self.estados):
+            estado_actual = ruta[-1]
+            siguiente_estado = min(estado_actual.vecinos, key=estado_actual.vecinos.get)
+            ruta.append(siguiente_estado)
+
+        return ruta
+
+    def costo_total(self, ruta):
+        costo_total = 0
+        for i in range(len(ruta) - 1):
+            costo_total += ruta[i].vecinos[ruta[i + 1]]
+        return costo_total
+
+
+
+estados = ["Baja California", "Sonora", "Chihuahua", "Sinaloa", "Durango", "Baja California Sur", "Coahuila"]
+
+grafo = Grafo()
+for estado in estados:
+    grafo.agregar_estado(Estado(estado))
+
+
+grafo.conectar("Baja California", "Sonora", 100)
+grafo.conectar("Baja California", "Durango", 200)
+grafo.conectar("Sonora", "Chihuahua", 150)
+grafo.conectar("Sonora", "Sinaloa", 120)
+grafo.conectar("Chihuahua", "Durango", 180)
+grafo.conectar("Chihuahua", "Coahuila", 250)
+grafo.conectar("Sinaloa", "Durango", 90)
+grafo.conectar("Sinaloa", "Baja California Sur", 300)
+grafo.conectar("Durango", "Coahuila", 220)
+grafo.conectar("Baja California Sur", "Coahuila", 350)
+
+
+print("Estados y sus relaciones:")
+for estado, vecinos in grafo.estados.items():
+    print(estado, ":", vecinos.vecinos)
+
+
+ruta_sin_repetir = grafo.recorrer_sin_repetir()
+costo_sin_repetir = grafo.costo_total(ruta_sin_repetir)
+
+ruta_con_repeticion = grafo.recorrer_con_repeticion()
+costo_con_repeticion = grafo.costo_total(ruta_con_repeticion)
+
+print("\nRecorrido sin repetir ningún estado:")
+for estado in ruta_sin_repetir:
+    print(estado)
+print("Costo total:", costo_sin_repetir)
+
+print("\nRecorrido repitiendo al menos un estado:")
+for estado in ruta_con_repeticion:
+    print(estado)
+print("Costo total:", costo_con_repeticion)
