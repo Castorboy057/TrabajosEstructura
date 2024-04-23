@@ -1,0 +1,83 @@
+import heapq
+
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    pq = [(0, start)]
+    
+    while pq:
+        current_dist, current_node = heapq.heappop(pq)
+        
+        if current_dist > distances[current_node]:
+            continue
+            
+        for neighbor, weight in graph[current_node].items():
+            distance = current_dist + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+    
+    return distances
+def floyd_warshall(graph):
+    n = len(graph)
+    dist = [[float('inf')] * n for _ in range(n)]
+    
+    for i in range(n):
+        dist[i][i] = 0
+    
+    for u in range(n):
+        for v in range(n):
+            if v in graph[u]:
+                dist[u][v] = graph[u][v]
+    
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+    
+    return dist
+def warshall(graph):
+    n = len(graph)
+    closure = [[0] * n for _ in range(n)]
+    
+    for i in range(n):
+        for j in range(n):
+            closure[i][j] = 1 if i == j or j in graph[i] else 0
+    
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                closure[i][j] = closure[i][j] or (closure[i][k] and closure[k][j])
+    
+    return closure
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+    
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        root_x = self.find(x)
+        root_y = self.find(y)
+        self.parent[root_y] = root_x
+
+def kruskal(graph):
+    edges = []
+    for u in graph:
+        for v, weight in graph[u].items():
+            edges.append((weight, u, v))
+    edges.sort()
+    
+    n = len(graph)
+    uf = UnionFind(n)
+    mst = []
+    
+    for weight, u, v in edges:
+        if uf.find(u) != uf.find(v):
+            uf.union(u, v)
+            mst.append((u, v, weight))
+    
+    return mst
