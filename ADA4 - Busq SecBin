@@ -1,0 +1,37 @@
+# Ejercicio 1: Búsqueda Secuencial
+
+
+elementos = [10, 20, 30, 40, 50]
+
+
+def busqueda_secuencial(lista, objetivo):
+    for i in range(len(lista)):
+        if lista[i] == objetivo:
+            return f"El elemento {objetivo} se encuentra en el índice {i}."
+    return f"El elemento {objetivo} no se encuentra en la lista."
+
+
+print(busqueda_secuencial(elementos, 30))  # Debería encontrar el elemento en el índice 2
+print(busqueda_secuencial(elementos, 60))  # No debería encontrar el elemento
+
+# Ejercicio 2: Búsqueda Binaria
+
+
+elementos_ordenados = [10, 20, 30, 40, 50]
+
+
+def busqueda_binaria(lista, objetivo):
+    izquierda, derecha = 0, len(lista) - 1
+    while izquierda <= derecha:
+        medio = (izquierda + derecha) // 2
+        if lista[medio] == objetivo:
+            return f"El elemento {objetivo} se encuentra en el índice {medio}."
+        elif lista[medio] < objetivo:
+            izquierda = medio + 1
+        else:
+            derecha = medio - 1
+    return f"El elemento {objetivo} no se encuentra en la lista."
+
+
+print(busqueda_binaria(elementos_ordenados, 30))  # Debería encontrar el elemento en el índice 2
+print(busqueda_binaria(elementos_ordenados, 60))  # No debería encontrar el elemento
